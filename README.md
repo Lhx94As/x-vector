@@ -1,2 +1,2 @@
 # x-vector
-For AP20-OLR Challenge
+A x-vector recipe for AP20-OLR Challenge, working in progress...
