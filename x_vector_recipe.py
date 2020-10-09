@@ -63,5 +63,31 @@ class xvecTDNN(nn.Module):
         x = self.fc8(x)
         output= self.softmax(x)
         # print("\toutput size", output.size())
+        return output
 
+class xvec_extractor(nn.Module):
+    def __init__(self,feature_dim):
+        super(xvec_extractor, self).__init__()
+        self.tdnn1 = nn.Conv1d(in_channels=feature_dim, out_channels=512, kernel_size=5, dilation=1)
+        self.bn1 = nn.BatchNorm1d(512, momentum=0.1, affine=False)
+        self.tdnn2 = nn.Conv1d(in_channels=512, out_channels=512, kernel_size=5, dilation=2)
+        self.bn2 = nn.BatchNorm1d(512, momentum=0.1, affine=False)
+        self.tdnn3 = nn.Conv1d(in_channels=512, out_channels=512, kernel_size=7, dilation=3)
+        self.bn3 = nn.BatchNorm1d(512, momentum=0.1, affine=False)
+        self.tdnn4 = nn.Conv1d(in_channels=512, out_channels=512, kernel_size=1, dilation=1)
+        self.bn4 = nn.BatchNorm1d(512, momentum=0.1, affine=False)
+        self.tdnn5 = nn.Conv1d(in_channels=512, out_channels=1500, kernel_size=1, dilation=1)
+        self.bn5 = nn.BatchNorm1d(1500, momentum=0.1, affine=False)
+        self.fc6 = nn.Linear(3000,512)
+        self.bn6 = nn.BatchNorm1d(512, momentum=0.1, affine=False)
+
+    def forward(self, x):
+        # Note: x must be (batch_size, feat_dim, chunk_len)
+        x = self.bn1(F.relu(self.tdnn1(x)))
+        x = self.bn2(F.relu(self.tdnn2(x)))
+        x = self.bn3(F.relu(self.tdnn3(x)))
+        x = self.bn4(F.relu(self.tdnn4(x)))
+        x = self.bn5(F.relu(self.tdnn5(x)))
+        stats = torch.cat((x.mean(dim=2), x.std(dim=2)), dim=1)
+        output = self.fc6(stats)
         return output
