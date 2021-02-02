@@ -32,7 +32,6 @@ class xvecTDNN(nn.Module):
         self.bn7 = nn.BatchNorm1d(512, momentum=0.1, affine=False) #momentum=0.5 in asv-subtools
 
         self.fc8 = nn.Linear(512,num_lang)
-        self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x, eps=1e-5):
         # Note: x must be (batch_size, feat_dim, chunk_len)
@@ -60,8 +59,7 @@ class xvecTDNN(nn.Module):
         x = self.dropout(x)
         x = self.bn7(F.relu(self.fc7(x)))
         x = self.dropout(x)
-        x = self.fc8(x)
-        output= self.softmax(x)
+        output = self.fc8(x)
         # print("\toutput size", output.size())
         return output
 
