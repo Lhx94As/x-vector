@@ -1,2 +1,3 @@
 # x-vector
-A x-vector recipe for AP20-OLR Challenge, working in progress...
+A pytorch x-vector implementation following the paper <<Spoken Language Recognition using x-vector>>
+Feel free to tell me if you find any errors in this repo.:)
