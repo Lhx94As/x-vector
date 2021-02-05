@@ -25,7 +25,7 @@ def main():
     parser.add_argument('--dim', type=int, help='dim of input features',
                         default=20)
     parser.add_argument('--modeldir', type=str, help='dir to save model',
-                        default='/home/hexin/Desktop/hexin/LID_project/LID_torch/model_NRF.ckpt')
+                        default='Your default dir + model_name.ckpt')
     parser.add_argument('--data', type=str, help='training data, in .txt')
     parser.add_argument('--batch', type=int, help='batch size',
                         default=2048)
