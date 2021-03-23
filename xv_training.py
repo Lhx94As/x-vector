@@ -16,7 +16,9 @@ def setup_seed(seed):
     torch.backends.cudnn.deterministic = False
     torch.backends.cudnn.benchmark = True
 
-    
+# To training an x-vector model, the inputs are chunks of the same length (100 frames, 200 frames, .etc) or various length in a range (50~200 frames).
+# In each batch, the input size should be [Batch_size, feature_dim, num_frames], where feature dim corresponds to --dim and num_frames is the length
+# of the input speech.
 def main():
     parser = argparse.ArgumentParser(description='paras for making data')
     parser.add_argument('--dim', type=int, help='dim of input features',
