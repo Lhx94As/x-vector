@@ -36,15 +36,11 @@ class xvecTDNN(nn.Module):
     def forward(self, x, eps=1e-5):
         # Note: x must be (batch_size, feat_dim, chunk_len)
         # print("\tIn Model: input size", x.size())
-        # x = self.dropout(x)
+        x = self.dropout(x)
         x = self.bn1(F.relu(self.tdnn1(x)))
-        x = self.dropout(x)
         x = self.bn2(F.relu(self.tdnn2(x)))
-        x = self.dropout(x)
         x = self.bn3(F.relu(self.tdnn3(x)))
-        x = self.dropout(x)
         x = self.bn4(F.relu(self.tdnn4(x)))
-        x = self.dropout(x)
         x = self.bn5(F.relu(self.tdnn5(x)))
 
         if self.training:
