@@ -2,7 +2,7 @@ import numpy as np
 import torch.utils.data as data
 import torch
 
-class MFCC_24(data.Dataset):
+class MFCC_data(data.Dataset):
     def __init__(self,txt_path):
         with open(txt_path, 'r') as f:
             lines = f.readlines()
