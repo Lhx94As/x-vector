@@ -35,15 +35,13 @@ def main():
     parser.add_argument('--lr',type=float,help='initial learning rate',
                         default=0.001)
     args = parser.parse_args()
-
     setup_seed(0)
  
     #== train model ==
     model = xvecTDNN(feature_dim=args.dim,num_lang=10,p_dropout=0.2)
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-
     model.to(device)
-
+    
     train_txt = args.data
     train_set = MFCC_data(train_txt)
     train_data = DataLoader(
@@ -52,23 +50,20 @@ def main():
         pin_memory=True,
         num_workers=16,
         shuffle = True)
+    
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer,T_max=args.epochs)
     
     # Train the model
     total_step = len(train_data)
-    curr_lr = args.lr
     for epoch in tqdm(range(args.epochs)):
         for step, (utt, labels) in enumerate(train_data):
             utt_ = utt.to(device)
             labels = labels.long().to(device)
-
             # Forward pass
             outputs = model(utt_) # output <=> prerdict_train
             loss = criterion(outputs, labels)
-            # metric = metric_func(outputs, labels) # e.g.: EER, accuracy
-
             # Backward and optimize
             optimizer.zero_grad()
             loss.backward()
