@@ -34,8 +34,6 @@ def main():
                         default=10)
     parser.add_argument('--lr',type=float,help='initial learning rate',
                         default=0.001)
-    parser.add_argument('--multigpu', type=bool, help='True if use multiple GPUs to train',
-                        default=True)
     args = parser.parse_args()
 
     setup_seed(0)
@@ -43,9 +41,7 @@ def main():
     #== train model ==
     model = xvecTDNN(feature_dim=args.dim,num_lang=10,p_dropout=0.2)
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    multi_gpu = args.multigpu
-    if multi_gpu:
-        model = nn.DataParallel(model, device_ids=[0, 1, 2, 3])
+
     model.to(device)
 
     train_txt = args.data
